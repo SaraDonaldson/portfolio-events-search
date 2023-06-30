@@ -1,6 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
-import {createMuiTheme, ThemeProvider} from '@material-ui/core';
+import {createMuiTheme, ThemeProvider} from '@mui/material'
+// '@material-ui/core';
+
 
 // const theme =createMuiTheme({
 //       palette:{
@@ -15,12 +16,12 @@ import {createMuiTheme, ThemeProvider} from '@material-ui/core';
 function App() {
   return (
 
-    // <ThemeProvider
-    // theme = {theme}>
+    <ThemeProvider>
+    {/* // theme = {theme}> */}
         <div className="App">
 
         </div>
-    // </ThemeProvider>
+    </ThemeProvider>
   );
 }
 
