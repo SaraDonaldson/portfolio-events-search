@@ -1,5 +1,8 @@
 import './App.css';
-import {createMuiTheme, ThemeProvider} from '@mui/material'
+import CityEventSearchScreen from './Screens/cityEventSearchScreen';
+
+
+// import {createMuiTheme, ThemeProvider} from '@mui/material'
 // '@material-ui/core';
 
 
@@ -16,12 +19,16 @@ import {createMuiTheme, ThemeProvider} from '@mui/material'
 function App() {
   return (
 
-    <ThemeProvider>
-    {/* // theme = {theme}> */}
-        <div className="App">
+    
+        <div className="app">
 
+            <CityEventSearchScreen/>
+
+        {/* <ThemeProvider> */}
+    {/* // theme = {theme}> */}
+      {/* </ThemeProvider> */}
         </div>
-    </ThemeProvider>
+  
   );
 }
 
