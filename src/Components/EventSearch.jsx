@@ -8,29 +8,32 @@ import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
 import EventsDisplayModal from "./EventsDisplayModal.jsx";
 import prepareEventDetails from "../Utils/prepareEventDetails";
-import Form from "./EventForm";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 
 
 
 function EventSearch() {
 
     const [events, setEvents] = useState();
-    const [location, setLocation] = useState();
+    const [location, setLocation] = useState("");
     const [showEvents, setShowEvents] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [chosenEvents, setChosenEvents] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [initialRender, setInitialRender] = useState(false)
 
 
   //Loads with user's current country in DB when loading
   useEffect(() => {
-    getLocation();
+    if (!location && !initialRender) {
+      getInitialLocation();
+      setInitialRender(true)
+    }
   }, []);
 
   //gets user location from local storage and sets it
-  async function getLocation() {
+  async function getInitialLocation() {
     await getEvents("london");
     setLocation("London")
   }
@@ -42,14 +45,16 @@ function EventSearch() {
   }
 
 
-  const handleLocationChange = async (form) => {
-    await getEvents(form.location);
-    setLocation(form.location);
+  const handleLocationChange = async (e) => {
+    e.preventDefault()
+    console.log('The location',location)
+    await getEvents(location);
     setShowEdit(!showEdit);
     console.log("events set as:", events);
   };
 
   async function getEvents(location) {
+    // console.log(the)
     let results = await GetEventsFromAPI(location);
     let otherResults = await results.map((result) => {
       let eventdetails = prepareEventDetails(result, location);
@@ -94,46 +99,52 @@ function EventSearch() {
               </IconButton>
             </>
           )}
+          </h2>
           {showEdit && (
-            <Form
-             submit={(form) => {
-              handleLocationChange(form);
-              }}
-              formInitialValues={{ location: "" }}
-              onFormChange={handleLocationChange}
+            <form
+             onSubmit={handleLocationChange }
+              // formInitialValues={{ location: "" }}
+              // onFormChange={handleLocationChange}
             >
               <TextField 
               name="location" 
               label="Enter Location" 
               variant="outlined"
               defaultValue={location}
+              onChange={(e) => setLocation(e.currentTarget.value)}
             
               />
-            </Form>
+            </form>
           )}
-        </h2>
       </div>
       {showEvents && (
-        <div className="show-choose-events">
-          <div className="results-choose-events">
+        <Grid pt={1} nowrap={true} alignItems="center"
+        justifyContent="center" container spacing={{sm:0, md:0}} columns={12}>
+ 
+         {/* <div className="show-choose-events">
+           <div className="results-choose-events"> */}
             {events.map((r) => {
               return (
-                <div key={r.id} className="event-items">
-                  {/* <Checkbox
-                    className="event-checkbox"
-                    value={r.id}
-                    onChange={handleCheckBoxChange}
-                    inputProps={{
-                      "aria-label": "Checkbox A",
-                    }}
-                  /> */}
+                <Grid alignItems="center"
+                justifyContent="center"
+                 key={r.id}
+                 item xs={12} sm={6} md={4} py={{xs:'0.5rem'}} px={'1rem'} zeroMinWidth>
+                
                   <EventCard r={r} modelOpen={handleOpenModal} />
-                </div>
+                
+            </Grid>
               );
             })}
-          </div>
-        </div>
+            </Grid>
       )}
+      {/* <Checkbox
+        className="event-checkbox"
+        value={r.id}
+        onChange={handleCheckBoxChange}
+        inputProps={{
+          "aria-label": "Checkbox A",
+        }}
+      /> */}
 
 
 

@@ -43,8 +43,9 @@ function EventsDisplayModal({ isOpen, handleOpen, eventData}) {
         <Card sx={{ maxWidth: "100%" }}>
           <CardActionArea>
             <CardMedia
+            style={{objectFit:'contain'}}
               component="img"
-              height="140"
+              width="400"
               image={eventData.image}
               alt={eventData.name}
             />
